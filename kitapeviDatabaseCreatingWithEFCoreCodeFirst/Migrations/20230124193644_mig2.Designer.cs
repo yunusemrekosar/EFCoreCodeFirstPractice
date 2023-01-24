@@ -12,8 +12,8 @@ using kitabeviDatabaseCreatingWithEFCoreCodeFirst.Context;
 namespace kitabeviDatabaseCreatingWithEFCoreCodeFirst.Migrations
 {
     [DbContext(typeof(kitapEviDbContext))]
-    [Migration("20230105123947_init")]
-    partial class init
+    [Migration("20230124193644_mig2")]
+    partial class mig2
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -27,58 +27,201 @@ namespace kitabeviDatabaseCreatingWithEFCoreCodeFirst.Migrations
 
             modelBuilder.Entity("KategoriKitap", b =>
                 {
-                    b.Property<short>("KategorilerKategoriID")
-                        .HasColumnType("smallint");
-
-                    b.Property<int>("KitaplarKitapID")
+                    b.Property<int>("KategorilerId")
                         .HasColumnType("int");
 
-                    b.HasKey("KategorilerKategoriID", "KitaplarKitapID");
+                    b.Property<int>("KitaplarId")
+                        .HasColumnType("int");
 
-                    b.HasIndex("KitaplarKitapID");
+                    b.HasKey("KategorilerId", "KitaplarId");
+
+                    b.HasIndex("KitaplarId");
 
                     b.ToTable("KategoriKitap");
                 });
 
             modelBuilder.Entity("KitapMusteri", b =>
                 {
-                    b.Property<int>("KitaplarKitapID")
+                    b.Property<int>("KitaplarId")
                         .HasColumnType("int");
 
-                    b.Property<int>("MusterilerMusteriID")
+                    b.Property<int>("MusterilerId")
                         .HasColumnType("int");
 
-                    b.HasKey("KitaplarKitapID", "MusterilerMusteriID");
+                    b.HasKey("KitaplarId", "MusterilerId");
 
-                    b.HasIndex("MusterilerMusteriID");
+                    b.HasIndex("MusterilerId");
 
                     b.ToTable("KitapMusteri");
                 });
 
             modelBuilder.Entity("KitapYazar", b =>
                 {
-                    b.Property<int>("KitaplarKitapID")
+                    b.Property<int>("KitaplarId")
                         .HasColumnType("int");
 
-                    b.Property<int>("YazarlarYazarID")
+                    b.Property<int>("YazarlarId")
                         .HasColumnType("int");
 
-                    b.HasKey("KitaplarKitapID", "YazarlarYazarID");
+                    b.HasKey("KitaplarId", "YazarlarId");
 
-                    b.HasIndex("YazarlarYazarID");
+                    b.HasIndex("YazarlarId");
 
                     b.ToTable("KitapYazar");
                 });
 
-            modelBuilder.Entity("kitabeviDatabaseCreatingWithEFCoreCodeFirst.Entity.Calisan", b =>
+            modelBuilder.Entity("kitabeviDatabaseCreatingWithEFCoreCodeFirst.Entity.Ilce", b =>
                 {
-                    b.Property<short>("CalisanID")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("smallint");
+                        .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<short>("CalisanID"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("CalisanAdSoyad")
+                    b.Property<string>("Adı")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("SehirID")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SehirID");
+
+                    b.ToTable("Ilceler");
+                });
+
+            modelBuilder.Entity("kitabeviDatabaseCreatingWithEFCoreCodeFirst.Entity.Kategori", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Adı")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Kategori");
+                });
+
+            modelBuilder.Entity("kitabeviDatabaseCreatingWithEFCoreCodeFirst.Entity.Kitap", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Adı")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("KitapBasimTarihi")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("KitapFiyatı")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("KitapISBN")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("KitapSayfaSayısı")
+                        .HasColumnType("int");
+
+                    b.Property<int>("KitapStok")
+                        .HasColumnType("int");
+
+                    b.Property<int>("YayineviID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("YazarID")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("YayineviID");
+
+                    b.ToTable("Kitap");
+                });
+
+            modelBuilder.Entity("kitabeviDatabaseCreatingWithEFCoreCodeFirst.Entity.Musteri", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Adı")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("IlceID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("MusteriAdres")
+                        .HasMaxLength(400)
+                        .HasColumnType("nvarchar(400)");
+
+                    b.Property<DateTime?>("MusteriDogumTarihi")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool?>("MusteriKadinMi")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("MusteriKurumsalMi")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("MusteriMail")
+                        .HasMaxLength(90)
+                        .HasColumnType("nvarchar(90)");
+
+                    b.Property<string>("MusteriParola")
+                        .IsRequired()
+                        .HasMaxLength(8)
+                        .HasColumnType("nvarchar(8)");
+
+                    b.Property<string>("MusteriTC")
+                        .IsRequired()
+                        .HasMaxLength(11)
+                        .HasColumnType("nvarchar(11)");
+
+                    b.Property<string>("MusteriTelNu")
+                        .IsRequired()
+                        .HasMaxLength(11)
+                        .HasColumnType("nvarchar(11)");
+
+                    b.Property<int>("SehirID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UlkeID")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("IlceID");
+
+                    b.HasIndex("SehirID");
+
+                    b.HasIndex("UlkeID");
+
+                    b.ToTable("Musteri");
+                });
+
+            modelBuilder.Entity("kitabeviDatabaseCreatingWithEFCoreCodeFirst.Entity.Personel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Adı")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -126,22 +269,22 @@ namespace kitabeviDatabaseCreatingWithEFCoreCodeFirst.Migrations
                         .HasMaxLength(70)
                         .HasColumnType("nvarchar(70)");
 
-                    b.Property<short?>("IlceID")
-                        .HasColumnType("smallint");
+                    b.Property<int?>("IlceID")
+                        .HasColumnType("int");
 
-                    b.Property<short?>("ReportsTo")
-                        .HasColumnType("smallint");
+                    b.Property<int?>("ReportsTo")
+                        .HasColumnType("int");
 
-                    b.Property<short?>("SehirID")
-                        .HasColumnType("smallint");
+                    b.Property<int?>("SehirID")
+                        .HasColumnType("int");
 
-                    b.Property<short?>("UlkeID")
-                        .HasColumnType("smallint");
+                    b.Property<int?>("UlkeID")
+                        .HasColumnType("int");
 
-                    b.Property<short>("UnvanID")
-                        .HasColumnType("smallint");
+                    b.Property<int>("UnvanID")
+                        .HasColumnType("int");
 
-                    b.HasKey("CalisanID");
+                    b.HasKey("Id");
 
                     b.HasIndex("IlceID");
 
@@ -151,156 +294,7 @@ namespace kitabeviDatabaseCreatingWithEFCoreCodeFirst.Migrations
 
                     b.HasIndex("UnvanID");
 
-                    b.ToTable("Calisanlar");
-                });
-
-            modelBuilder.Entity("kitabeviDatabaseCreatingWithEFCoreCodeFirst.Entity.Ilce", b =>
-                {
-                    b.Property<short>("IlceID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("smallint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<short>("IlceID"));
-
-                    b.Property<string>("IlceAD")
-                        .IsRequired()
-                        .HasMaxLength(70)
-                        .HasColumnType("nvarchar(70)");
-
-                    b.Property<short>("SehirID")
-                        .HasColumnType("smallint");
-
-                    b.HasKey("IlceID");
-
-                    b.HasIndex("SehirID");
-
-                    b.ToTable("Ilceler");
-                });
-
-            modelBuilder.Entity("kitabeviDatabaseCreatingWithEFCoreCodeFirst.Entity.Kategori", b =>
-                {
-                    b.Property<short>("KategoriID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("smallint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<short>("KategoriID"));
-
-                    b.Property<string>("KategoriAdı")
-                        .IsRequired()
-                        .HasMaxLength(70)
-                        .HasColumnType("nvarchar(70)");
-
-                    b.HasKey("KategoriID");
-
-                    b.ToTable("Kategori");
-                });
-
-            modelBuilder.Entity("kitabeviDatabaseCreatingWithEFCoreCodeFirst.Entity.Kitap", b =>
-                {
-                    b.Property<int>("KitapID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("KitapID"));
-
-                    b.Property<string>("KitapAd")
-                        .IsRequired()
-                        .HasMaxLength(80)
-                        .HasColumnType("nvarchar(80)");
-
-                    b.Property<string>("KitapBasimTarihi")
-                        .HasMaxLength(4)
-                        .HasColumnType("nvarchar(4)");
-
-                    b.Property<decimal>("KitapFiyatı")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("KitapISBN")
-                        .HasMaxLength(13)
-                        .HasColumnType("nvarchar(13)");
-
-                    b.Property<short>("KitapSayfaSayısı")
-                        .HasColumnType("smallint");
-
-                    b.Property<short>("KitapStok")
-                        .HasColumnType("smallint");
-
-                    b.Property<int>("YayineviID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("YazarID")
-                        .HasColumnType("int");
-
-                    b.HasKey("KitapID");
-
-                    b.HasIndex("YayineviID");
-
-                    b.ToTable("Kitap");
-                });
-
-            modelBuilder.Entity("kitabeviDatabaseCreatingWithEFCoreCodeFirst.Entity.Musteri", b =>
-                {
-                    b.Property<int>("MusteriID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MusteriID"));
-
-                    b.Property<short>("IlceID")
-                        .HasColumnType("smallint");
-
-                    b.Property<string>("MusteriAdres")
-                        .HasMaxLength(400)
-                        .HasColumnType("nvarchar(400)");
-
-                    b.Property<string>("MusteriAdıSoyadı")
-                        .IsRequired()
-                        .HasMaxLength(90)
-                        .HasColumnType("nvarchar(90)");
-
-                    b.Property<DateTime?>("MusteriDogumTarihi")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool?>("MusteriKadinMi")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("MusteriKurumsalMi")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("MusteriMail")
-                        .HasMaxLength(90)
-                        .HasColumnType("nvarchar(90)");
-
-                    b.Property<string>("MusteriParola")
-                        .IsRequired()
-                        .HasMaxLength(8)
-                        .HasColumnType("nvarchar(8)");
-
-                    b.Property<string>("MusteriTC")
-                        .IsRequired()
-                        .HasMaxLength(11)
-                        .HasColumnType("nvarchar(11)");
-
-                    b.Property<string>("MusteriTelNu")
-                        .IsRequired()
-                        .HasMaxLength(11)
-                        .HasColumnType("nvarchar(11)");
-
-                    b.Property<short>("SehirID")
-                        .HasColumnType("smallint");
-
-                    b.Property<short>("UlkeID")
-                        .HasColumnType("smallint");
-
-                    b.HasKey("MusteriID");
-
-                    b.HasIndex("IlceID");
-
-                    b.HasIndex("SehirID");
-
-                    b.HasIndex("UlkeID");
-
-                    b.ToTable("Musteri");
+                    b.ToTable("Personeller");
                 });
 
             modelBuilder.Entity("kitabeviDatabaseCreatingWithEFCoreCodeFirst.Entity.Satıs", b =>
@@ -311,11 +305,11 @@ namespace kitabeviDatabaseCreatingWithEFCoreCodeFirst.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SatısID"));
 
-                    b.Property<short>("CalisanID")
-                        .HasColumnType("smallint");
+                    b.Property<int>("CalisanID")
+                        .HasColumnType("int");
 
-                    b.Property<short>("Indirim")
-                        .HasColumnType("smallint");
+                    b.Property<int>("Indirim")
+                        .HasColumnType("int");
 
                     b.Property<int>("MusteriID")
                         .HasColumnType("int");
@@ -344,22 +338,20 @@ namespace kitabeviDatabaseCreatingWithEFCoreCodeFirst.Migrations
 
             modelBuilder.Entity("kitabeviDatabaseCreatingWithEFCoreCodeFirst.Entity.Sehir", b =>
                 {
-                    b.Property<short>("SehirID")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("smallint");
+                        .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<short>("SehirID"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("SehirAd")
+                    b.Property<string>("Adı")
                         .IsRequired()
-                        .HasMaxLength(70)
-                        .HasColumnType("nvarchar(70)");
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<short?>("UlkeID")
-                        .IsRequired()
-                        .HasColumnType("smallint");
+                    b.Property<int>("UlkeID")
+                        .HasColumnType("int");
 
-                    b.HasKey("SehirID");
+                    b.HasKey("Id");
 
                     b.HasIndex("UlkeID");
 
@@ -368,89 +360,85 @@ namespace kitabeviDatabaseCreatingWithEFCoreCodeFirst.Migrations
 
             modelBuilder.Entity("kitabeviDatabaseCreatingWithEFCoreCodeFirst.Entity.Ulke", b =>
                 {
-                    b.Property<short>("UlkeID")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("smallint");
+                        .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<short>("UlkeID"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("UlkeAd")
+                    b.Property<string>("Adı")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("UlkeID");
+                    b.HasKey("Id");
 
                     b.ToTable("Ulkeler");
                 });
 
             modelBuilder.Entity("kitabeviDatabaseCreatingWithEFCoreCodeFirst.Entity.Unvan", b =>
                 {
-                    b.Property<short>("UnvanID")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("smallint");
+                        .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<short>("UnvanID"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("UnvanAd")
+                    b.Property<string>("Adı")
                         .IsRequired()
-                        .HasMaxLength(40)
-                        .HasColumnType("nvarchar(40)");
+                        .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("UnvanID");
+                    b.HasKey("Id");
 
                     b.ToTable("Unvanlar");
                 });
 
             modelBuilder.Entity("kitabeviDatabaseCreatingWithEFCoreCodeFirst.Entity.Yayınevi", b =>
                 {
-                    b.Property<int>("YayıneviID")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("YayıneviID"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Adı")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("YayıneviAdres")
                         .HasMaxLength(400)
                         .HasColumnType("nvarchar(400)");
 
-                    b.Property<string>("YayıneviAdı")
-                        .IsRequired()
-                        .HasMaxLength(70)
-                        .HasColumnType("nvarchar(70)");
-
                     b.Property<string>("YayıneviTelefon")
                         .HasMaxLength(11)
                         .HasColumnType("nvarchar(11)");
 
-                    b.HasKey("YayıneviID");
+                    b.HasKey("Id");
 
                     b.ToTable("Yayınevi");
                 });
 
             modelBuilder.Entity("kitabeviDatabaseCreatingWithEFCoreCodeFirst.Entity.Yazar", b =>
                 {
-                    b.Property<int>("YazarID")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("YazarID"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<short>("UlkeID")
-                        .HasColumnType("smallint");
+                    b.Property<string>("Adı")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("UlkeID")
+                        .HasColumnType("int");
 
                     b.Property<string>("YazarAcıklama")
-                        .HasMaxLength(250)
-                        .HasColumnType("nvarchar(250)");
-
-                    b.Property<string>("YazarAdıSoyadı")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool?>("YazarKadınMi")
                         .HasColumnType("bit");
 
-                    b.HasKey("YazarID");
+                    b.HasKey("Id");
 
                     b.HasIndex("UlkeID");
 
@@ -461,13 +449,13 @@ namespace kitabeviDatabaseCreatingWithEFCoreCodeFirst.Migrations
                 {
                     b.HasOne("kitabeviDatabaseCreatingWithEFCoreCodeFirst.Entity.Kategori", null)
                         .WithMany()
-                        .HasForeignKey("KategorilerKategoriID")
+                        .HasForeignKey("KategorilerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("kitabeviDatabaseCreatingWithEFCoreCodeFirst.Entity.Kitap", null)
                         .WithMany()
-                        .HasForeignKey("KitaplarKitapID")
+                        .HasForeignKey("KitaplarId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -476,13 +464,13 @@ namespace kitabeviDatabaseCreatingWithEFCoreCodeFirst.Migrations
                 {
                     b.HasOne("kitabeviDatabaseCreatingWithEFCoreCodeFirst.Entity.Kitap", null)
                         .WithMany()
-                        .HasForeignKey("KitaplarKitapID")
+                        .HasForeignKey("KitaplarId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("kitabeviDatabaseCreatingWithEFCoreCodeFirst.Entity.Musteri", null)
                         .WithMany()
-                        .HasForeignKey("MusterilerMusteriID")
+                        .HasForeignKey("MusterilerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -491,44 +479,15 @@ namespace kitabeviDatabaseCreatingWithEFCoreCodeFirst.Migrations
                 {
                     b.HasOne("kitabeviDatabaseCreatingWithEFCoreCodeFirst.Entity.Kitap", null)
                         .WithMany()
-                        .HasForeignKey("KitaplarKitapID")
+                        .HasForeignKey("KitaplarId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("kitabeviDatabaseCreatingWithEFCoreCodeFirst.Entity.Yazar", null)
                         .WithMany()
-                        .HasForeignKey("YazarlarYazarID")
+                        .HasForeignKey("YazarlarId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("kitabeviDatabaseCreatingWithEFCoreCodeFirst.Entity.Calisan", b =>
-                {
-                    b.HasOne("kitabeviDatabaseCreatingWithEFCoreCodeFirst.Entity.Ilce", "Ilce")
-                        .WithMany("Calisanlar")
-                        .HasForeignKey("IlceID");
-
-                    b.HasOne("kitabeviDatabaseCreatingWithEFCoreCodeFirst.Entity.Sehir", "Sehir")
-                        .WithMany("Calisanlar")
-                        .HasForeignKey("SehirID");
-
-                    b.HasOne("kitabeviDatabaseCreatingWithEFCoreCodeFirst.Entity.Ulke", "Ulke")
-                        .WithMany("Calisanlar")
-                        .HasForeignKey("UlkeID");
-
-                    b.HasOne("kitabeviDatabaseCreatingWithEFCoreCodeFirst.Entity.Unvan", "Unvan")
-                        .WithMany("Calisanlar")
-                        .HasForeignKey("UnvanID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Ilce");
-
-                    b.Navigation("Sehir");
-
-                    b.Navigation("Ulke");
-
-                    b.Navigation("Unvan");
                 });
 
             modelBuilder.Entity("kitabeviDatabaseCreatingWithEFCoreCodeFirst.Entity.Ilce", b =>
@@ -577,9 +536,38 @@ namespace kitabeviDatabaseCreatingWithEFCoreCodeFirst.Migrations
                     b.Navigation("Ulke");
                 });
 
+            modelBuilder.Entity("kitabeviDatabaseCreatingWithEFCoreCodeFirst.Entity.Personel", b =>
+                {
+                    b.HasOne("kitabeviDatabaseCreatingWithEFCoreCodeFirst.Entity.Ilce", "Ilce")
+                        .WithMany("Personeller")
+                        .HasForeignKey("IlceID");
+
+                    b.HasOne("kitabeviDatabaseCreatingWithEFCoreCodeFirst.Entity.Sehir", "Sehir")
+                        .WithMany("Personeller")
+                        .HasForeignKey("SehirID");
+
+                    b.HasOne("kitabeviDatabaseCreatingWithEFCoreCodeFirst.Entity.Ulke", "Ulke")
+                        .WithMany("Personeller")
+                        .HasForeignKey("UlkeID");
+
+                    b.HasOne("kitabeviDatabaseCreatingWithEFCoreCodeFirst.Entity.Unvan", "Unvan")
+                        .WithMany("Personeller")
+                        .HasForeignKey("UnvanID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Ilce");
+
+                    b.Navigation("Sehir");
+
+                    b.Navigation("Ulke");
+
+                    b.Navigation("Unvan");
+                });
+
             modelBuilder.Entity("kitabeviDatabaseCreatingWithEFCoreCodeFirst.Entity.Satıs", b =>
                 {
-                    b.HasOne("kitabeviDatabaseCreatingWithEFCoreCodeFirst.Entity.Calisan", "Calisan")
+                    b.HasOne("kitabeviDatabaseCreatingWithEFCoreCodeFirst.Entity.Personel", "Personel")
                         .WithMany("Satıslar")
                         .HasForeignKey("CalisanID")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -591,9 +579,9 @@ namespace kitabeviDatabaseCreatingWithEFCoreCodeFirst.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Calisan");
-
                     b.Navigation("Musteri");
+
+                    b.Navigation("Personel");
                 });
 
             modelBuilder.Entity("kitabeviDatabaseCreatingWithEFCoreCodeFirst.Entity.Sehir", b =>
@@ -617,16 +605,11 @@ namespace kitabeviDatabaseCreatingWithEFCoreCodeFirst.Migrations
                     b.Navigation("Ulke");
                 });
 
-            modelBuilder.Entity("kitabeviDatabaseCreatingWithEFCoreCodeFirst.Entity.Calisan", b =>
-                {
-                    b.Navigation("Satıslar");
-                });
-
             modelBuilder.Entity("kitabeviDatabaseCreatingWithEFCoreCodeFirst.Entity.Ilce", b =>
                 {
-                    b.Navigation("Calisanlar");
-
                     b.Navigation("Musteriler");
+
+                    b.Navigation("Personeller");
                 });
 
             modelBuilder.Entity("kitabeviDatabaseCreatingWithEFCoreCodeFirst.Entity.Musteri", b =>
@@ -634,20 +617,25 @@ namespace kitabeviDatabaseCreatingWithEFCoreCodeFirst.Migrations
                     b.Navigation("Satıslar");
                 });
 
+            modelBuilder.Entity("kitabeviDatabaseCreatingWithEFCoreCodeFirst.Entity.Personel", b =>
+                {
+                    b.Navigation("Satıslar");
+                });
+
             modelBuilder.Entity("kitabeviDatabaseCreatingWithEFCoreCodeFirst.Entity.Sehir", b =>
                 {
-                    b.Navigation("Calisanlar");
-
                     b.Navigation("Ilceler");
 
                     b.Navigation("Musteriler");
+
+                    b.Navigation("Personeller");
                 });
 
             modelBuilder.Entity("kitabeviDatabaseCreatingWithEFCoreCodeFirst.Entity.Ulke", b =>
                 {
-                    b.Navigation("Calisanlar");
-
                     b.Navigation("Musteriler");
+
+                    b.Navigation("Personeller");
 
                     b.Navigation("Sehirler");
 
@@ -656,7 +644,7 @@ namespace kitabeviDatabaseCreatingWithEFCoreCodeFirst.Migrations
 
             modelBuilder.Entity("kitabeviDatabaseCreatingWithEFCoreCodeFirst.Entity.Unvan", b =>
                 {
-                    b.Navigation("Calisanlar");
+                    b.Navigation("Personeller");
                 });
 
             modelBuilder.Entity("kitabeviDatabaseCreatingWithEFCoreCodeFirst.Entity.Yayınevi", b =>

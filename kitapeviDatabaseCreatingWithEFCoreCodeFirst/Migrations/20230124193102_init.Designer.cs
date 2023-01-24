@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using kitabeviDatabaseCreatingWithEFCoreCodeFirst.Context;
 
@@ -11,9 +12,11 @@ using kitabeviDatabaseCreatingWithEFCoreCodeFirst.Context;
 namespace kitabeviDatabaseCreatingWithEFCoreCodeFirst.Migrations
 {
     [DbContext(typeof(kitapEviDbContext))]
-    partial class kitapEviDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230124193102_init")]
+    partial class init
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -75,7 +78,7 @@ namespace kitabeviDatabaseCreatingWithEFCoreCodeFirst.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Adı")
+                    b.Property<string>("IlceAD")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -97,7 +100,7 @@ namespace kitabeviDatabaseCreatingWithEFCoreCodeFirst.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Adı")
+                    b.Property<string>("KategoriAdı")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -114,7 +117,7 @@ namespace kitabeviDatabaseCreatingWithEFCoreCodeFirst.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Adı")
+                    b.Property<string>("KitapAd")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -154,16 +157,17 @@ namespace kitabeviDatabaseCreatingWithEFCoreCodeFirst.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Adı")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<int>("IlceID")
                         .HasColumnType("int");
 
                     b.Property<string>("MusteriAdres")
                         .HasMaxLength(400)
                         .HasColumnType("nvarchar(400)");
+
+                    b.Property<string>("MusteriAdıSoyadı")
+                        .IsRequired()
+                        .HasMaxLength(90)
+                        .HasColumnType("nvarchar(90)");
 
                     b.Property<DateTime?>("MusteriDogumTarihi")
                         .HasColumnType("datetime2");
@@ -218,7 +222,7 @@ namespace kitabeviDatabaseCreatingWithEFCoreCodeFirst.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Adı")
+                    b.Property<string>("CalisanAdSoyad")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -296,11 +300,11 @@ namespace kitabeviDatabaseCreatingWithEFCoreCodeFirst.Migrations
 
             modelBuilder.Entity("kitabeviDatabaseCreatingWithEFCoreCodeFirst.Entity.Satıs", b =>
                 {
-                    b.Property<int>("SatısID")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SatısID"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("CalisanID")
                         .HasColumnType("int");
@@ -324,7 +328,7 @@ namespace kitabeviDatabaseCreatingWithEFCoreCodeFirst.Migrations
                     b.Property<DateTime>("SatısTarih")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("SatısID");
+                    b.HasKey("Id");
 
                     b.HasIndex("CalisanID");
 
@@ -341,9 +345,10 @@ namespace kitabeviDatabaseCreatingWithEFCoreCodeFirst.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Adı")
+                    b.Property<string>("SehirAd")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(70)
+                        .HasColumnType("nvarchar(70)");
 
                     b.Property<int>("UlkeID")
                         .HasColumnType("int");
@@ -363,7 +368,7 @@ namespace kitabeviDatabaseCreatingWithEFCoreCodeFirst.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Adı")
+                    b.Property<string>("UlkeAd")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -380,7 +385,7 @@ namespace kitabeviDatabaseCreatingWithEFCoreCodeFirst.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Adı")
+                    b.Property<string>("UnvanAd")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -397,13 +402,14 @@ namespace kitabeviDatabaseCreatingWithEFCoreCodeFirst.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Adı")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("YayıneviAdres")
                         .HasMaxLength(400)
                         .HasColumnType("nvarchar(400)");
+
+                    b.Property<string>("YayıneviAdı")
+                        .IsRequired()
+                        .HasMaxLength(70)
+                        .HasColumnType("nvarchar(70)");
 
                     b.Property<string>("YayıneviTelefon")
                         .HasMaxLength(11)
@@ -422,14 +428,14 @@ namespace kitabeviDatabaseCreatingWithEFCoreCodeFirst.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Adı")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<int>("UlkeID")
                         .HasColumnType("int");
 
                     b.Property<string>("YazarAcıklama")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("YazarAdıSoyadı")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool?>("YazarKadınMi")

@@ -5,7 +5,7 @@ namespace kitabeviDatabaseCreatingWithEFCoreCodeFirst.Context
 {
     internal class kitapEviDbContext : DbContext
     {
-        public DbSet<Calisan> Calisanlar { get; set; }
+        public DbSet<Personel> Personeller { get; set; }
         public DbSet<Unvan> Unvanlar { get; set; }
         public DbSet<Ulke> Ulkeler { get; set; }
         public DbSet<Sehir> Sehirler { get; set; }
@@ -30,27 +30,27 @@ namespace kitabeviDatabaseCreatingWithEFCoreCodeFirst.Context
                 .HasForeignKey(i=>i.SehirID)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            modelBuilder.Entity<Calisan>()
+            modelBuilder.Entity<Personel>()
                 .HasOne(c => c.Unvan)
-                .WithMany(u => u.Calisanlar)
+                .WithMany(u => u.Personeller)
                 .HasForeignKey(c => c.UnvanID)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            modelBuilder.Entity<Calisan>()
+            modelBuilder.Entity<Personel>()
                 .HasOne(c => c.Ilce)
-                .WithMany(c => c.Calisanlar)
+                .WithMany(c => c.Personeller)
                 .HasForeignKey(c=>c.IlceID)
                 .OnDelete(DeleteBehavior.ClientSetNull);
 
-            modelBuilder.Entity<Calisan>()
+            modelBuilder.Entity<Personel>()
                 .HasOne(c=>c.Sehir)
-                .WithMany(s=>s.Calisanlar)
+                .WithMany(s=>s.Personeller)
                 .HasForeignKey(c=>c.SehirID)
                 .OnDelete(DeleteBehavior.ClientSetNull);
 
-            modelBuilder.Entity<Calisan>()
+            modelBuilder.Entity<Personel>()
                 .HasOne(c => c.Ulke)
-                .WithMany(u => u.Calisanlar)
+                .WithMany(u => u.Personeller)
                 .HasForeignKey(u => u.UlkeID)
                 .OnDelete(DeleteBehavior.ClientSetNull);
 
@@ -97,7 +97,7 @@ namespace kitabeviDatabaseCreatingWithEFCoreCodeFirst.Context
                 .WithMany(k => k.Musteriler);
 
             modelBuilder.Entity<Satıs>()
-                .HasOne(s => s.Calisan)
+                .HasOne(s => s.Personel)
                 .WithMany(c => c.Satıslar)
                 .HasForeignKey(s => s.CalisanID)
                 .OnDelete(DeleteBehavior.Cascade);
@@ -108,9 +108,9 @@ namespace kitabeviDatabaseCreatingWithEFCoreCodeFirst.Context
                 .HasForeignKey(s=>s.MusteriID)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            modelBuilder.Entity<Calisan>()
+            modelBuilder.Entity<Personel>()
                 .HasOne(c => c.Unvan)
-                .WithMany(u => u.Calisanlar)
+                .WithMany(u => u.Personeller)
                 .HasForeignKey(c=>c.UnvanID)
                 .OnDelete(DeleteBehavior.Cascade);
 
